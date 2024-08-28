@@ -99,3 +99,9 @@ const filterByWords = (
       : getNumberOfWords(news.title) <= numberOfWords
   );
 };
+
+const toSortedByNumberOfComments = (news: News[]) =>
+  news.toSorted((a: News, b: News) => b.numberOfComments - a.numberOfComments);
+
+const toSortedByPoints = (news: News[]) =>
+  news.toSorted((a: News, b: News) => b.points - a.points);
