@@ -76,3 +76,26 @@ const getDefaultNews = ({
   number: number ?? 0,
   numberOfComments: numberOfComments ?? 0,
 });
+
+const getNumberOfWords = (str: string): number => {
+  // Replace symbols with an empty string
+  let strWithoutSymbols = str.replace(/[^a-zA-Z0-9\s]/g, "");
+
+  // Split by space, remove empty strings so there are not counted
+  let words = strWithoutSymbols.split(" ").filter((word) => word.length > 0);
+
+  // Return the number of words
+  return words.length;
+};
+
+const filterByWords = (
+  newsArray: News[],
+  numberOfWords: number,
+  greaterThan: boolean
+) => {
+  return newsArray.filter((news) =>
+    greaterThan
+      ? getNumberOfWords(news.title) > numberOfWords
+      : getNumberOfWords(news.title) <= numberOfWords
+  );
+};
