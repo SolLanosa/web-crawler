@@ -7,11 +7,10 @@ export const crawlYCombinatorNews = async (
 ) => {
   const { data: pageHTML } = await axios.get("https://news.ycombinator.com/");
   const news = parseNewsFromHTML(pageHTML);
-
   return sortAndFilterNews(news, sortAndFilter);
 };
 
-const parseNewsFromHTML = (pageHTML: string): News[] => {
+export const parseNewsFromHTML = (pageHTML: string): News[] => {
   const dom = new JSDOM(`${pageHTML}`);
 
   const tableContent = dom.window.document.querySelectorAll(
