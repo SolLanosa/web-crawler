@@ -1,10 +1,14 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
-import { News } from "./types";
+import { News, SortAndFilterEnum } from "./types";
 
-export const crawlYCombinatorNews = async () => {
+export const crawlYCombinatorNews = async (
+  sortAndFilter: SortAndFilterEnum
+) => {
   const { data: pageHTML } = await axios.get("https://news.ycombinator.com/");
-  return parseNewsFromHTML(pageHTML);
+  const news = parseNewsFromHTML(pageHTML);
+
+  return sortAndFilterNews(news, sortAndFilter);
 };
 
 const parseNewsFromHTML = (pageHTML: string): News[] => {
@@ -35,14 +39,14 @@ const parseNewsFromHTML = (pageHTML: string): News[] => {
       currentNews.numberOfComments = numberOfComments;
     }
   }
-  console.log(news);
   return news;
 };
 
-const parseTitleRow = (row: Element) => {
+export const parseTitleRow = (row: Element) => {
   const newsNumber = row
-    .querySelector(".title .rank")
+    .querySelector(".rank")
     ?.textContent?.replaceAll(".", "");
+
   const title = row.querySelector(".titleline a")?.textContent ?? "";
   return {
     title,
@@ -50,7 +54,7 @@ const parseTitleRow = (row: Element) => {
   };
 };
 
-const parsePointsAndComments = (row: Element) => {
+export const parsePointsAndComments = (row: Element) => {
   const numberOfCommentsText =
     row.querySelector(".subline")?.lastElementChild?.textContent;
   const numberOfComments =
@@ -77,7 +81,7 @@ const getDefaultNews = ({
   numberOfComments: numberOfComments ?? 0,
 });
 
-const getNumberOfWords = (str: string): number => {
+export const getNumberOfWords = (str: string): number => {
   // Replace symbols with an empty string
   let strWithoutSymbols = str.replace(/[^a-zA-Z0-9\s]/g, "");
 
@@ -88,7 +92,7 @@ const getNumberOfWords = (str: string): number => {
   return words.length;
 };
 
-const filterByWords = (
+export const filterByWords = (
   newsArray: News[],
   numberOfWords: number,
   greaterThan: boolean
@@ -100,8 +104,22 @@ const filterByWords = (
   );
 };
 
-const toSortedByNumberOfComments = (news: News[]) =>
+export const toSortedByNumberOfComments = (news: News[]) =>
   news.toSorted((a: News, b: News) => b.numberOfComments - a.numberOfComments);
 
-const toSortedByPoints = (news: News[]) =>
+export const toSortedByPoints = (news: News[]) =>
   news.toSorted((a: News, b: News) => b.points - a.points);
+
+export const sortAndFilterNews = (
+  news: News[],
+  sortAndFilter: SortAndFilterEnum
+) => {
+  if (sortAndFilter === SortAndFilterEnum.NumberCommentsAndWordsGreatherThan) {
+    const newsGreatherThan = filterByWords(news, 5, true);
+    return toSortedByNumberOfComments(newsGreatherThan);
+  } else if (sortAndFilter === SortAndFilterEnum.PointsAndWordsLowerThan) {
+    const newsLowerThan = filterByWords(news, 5, false);
+    return toSortedByPoints(newsLowerThan);
+  }
+  return news;
+};
