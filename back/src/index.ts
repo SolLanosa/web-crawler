@@ -1,13 +1,18 @@
 import express, { Request, Response } from "express";
 import { CONFIG } from "./config";
 import { crawlYCombinatorNews } from "./service";
+import { convertValueToSortAndFilterEnum } from "./utils";
 
 const app = express();
 const port = CONFIG.PORT || 8080;
 
 app.get("/", async (req: Request, res: Response) => {
-  await crawlYCombinatorNews();
-  res.send("Hello, TypeScript Express!");
+  const sortAndFilter = convertValueToSortAndFilterEnum(
+    req.query.sortAndFilter as string | undefined
+  );
+
+  const news = await crawlYCombinatorNews(sortAndFilter);
+  res.send(news);
 });
 
 const httpServer = app.listen(port, () => {
