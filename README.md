@@ -1,9 +1,30 @@
-# Web Crawler - FRONT
+# Web Crawler
+
+## Getting Started
+
+To run the project you need both backend and frontend running.
+To run the frontend execute the following commands:
+
+1. Set your env variables `cp sample.env .env`
+2. Install dependencies `npm install`
+3. Run `npm run dev`
+
+To run the backend execute the following commands:
+
+1. Install dependencies `npm install`
+2. Run `npm run dev`
+
+You can also run the test suite.
+To run tests execute the following command: `npm run test`
 
 ## Why Next?
 
 React's own documentation nowadays directly recommends using a framework from the start. [See React doc](https://react.dev/learn/start-a-new-react-project).
 Among the available frameworks, Next.js is one of the most widely used, which implies a strong community contributing to it and makes onboarding new team members easier. Compared to base React, it offers important features such as server-side rendering, image optimization, and out-of-the-box routing.
+
+## Why express?
+
+Express is one of the most popular and widely used frameworks for API development in Node.js. Its large and active community provides a rich collection of plugins, tools, and resources that accelerate development and streamline common tasks. Additionally, choosing Node.js allows the same language to be used across both the backend and frontend, which reduces friction and improves efficiency in full-stack development.
 
 ## Use of Conventional Commits
 
@@ -44,3 +65,7 @@ Data-fetching library. Usefull features used here:
 - Handle query catching
 
 In this case given the simplicity of the data management it can be use as a global data store avoiding duplication of data like what would happen if you would use react-query + state management library
+
+### jsdom
+
+To scrape the Y Combinator site, I needed a library that could parse and manage the HTML returned by the site. After some research, I discovered that jsdom was a popular choice. It was straightforward to use and simpler than other options I considered, such as Cheerio.
