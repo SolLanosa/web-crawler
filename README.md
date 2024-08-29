@@ -5,17 +5,19 @@
 To run the project you need both backend and frontend running.
 To run the frontend execute the following commands:
 
-1. Set your env variables `cp sample.env .env`
-2. Install dependencies `npm install`
-3. Run `npm run dev`
+1. Go to the front folder `cd front`
+2. Set your env variables `cp sample.env .env`
+3. Install dependencies `npm install`
+4. Run `npm run dev`
 
 To run the backend execute the following commands:
 
-1. Install dependencies `npm install`
-2. Run `npm run dev`
+1. Go to the back folder `cd back`
+2. Install dependencies `npm install`
+3. Run `npm run dev`
 
 You can also run the test suite.
-To run tests execute the following command: `npm run test`
+To run tests execute the following command: `cd back && npm run test`
 
 ## Why Next?
 
